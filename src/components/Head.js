@@ -33,13 +33,10 @@ const Head = () => {
     };
   }, [searchQuery]);
 
-  useEffect(() => {
-    searchListBySuggestion();
-  }, [searchSuggestion]);
-
-  const searchListBySuggestion = async () => {
-    const data = await fetch(YOUTUBE_SEARCH_BY_KEY + searchSuggestion);
+  const searchListBySuggestion = async (suggestion) => {
+    const data = await fetch(YOUTUBE_SEARCH_BY_KEY + suggestion);
     const json = await data.json();
+
     dispatch(storeInfo(json.items));
   };
   /**
@@ -70,10 +67,9 @@ const Head = () => {
   };
 
   const handleSearch = (suggestion) => {
-    console.log(suggestion);
-
     setSearchSuggestion(suggestion);
     setShowSuggestions(false);
+    searchListBySuggestion(suggestion);
   };
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
